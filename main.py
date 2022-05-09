@@ -33,7 +33,7 @@ def if_user_in_the_db(user):
 
 # Информация о боте
 @bot.message_handler(commands=['info'])
-def start(message):
+def info(message):
     global user_id
     user_id = message.chat.id
     bot.send_message(user_id, "СуперЖелезнаяВоля - обычный телеграм-бот, который поможет вам избавиться от вредных"
