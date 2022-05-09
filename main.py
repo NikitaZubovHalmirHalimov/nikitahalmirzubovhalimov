@@ -4,7 +4,6 @@ import sqlite3
 import datetime
 from achivevements import ach
 from count import count
-import os
 bot = telebot.TeleBot(bot_token)
 user_id = 0
 now = datetime.datetime.now()
@@ -20,7 +19,6 @@ cur.execute("""CREATE TABLE IF NOT EXISTS users(
    days INT,
    ach TEXT);
 """)
-bot_token = os.environ['BOT_TOKEN']
 
 
 # Проверка - есть ли пользователь в базе
