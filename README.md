@@ -13,11 +13,11 @@
 
 ## **Файлы**
 Всего есть 5 файлов:
-- [**main.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/main.py)
-- [**send.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/send.py)
-- [**count.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/count.py)
-- [**achievements.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/achievements.py)
-- [**settings.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/settings.py)
+- [**main.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/main.py) - Отвечает за команды бота
+- [**send.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/send.py) - Отправляет всем определённую пользователям информацию
+- [**count.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/count.py) - Содержит функцию count
+- [**achievements.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/achievements.py) - Содержит функцию ach
+- [**settings.py**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/settings.py) - Содержит bot_token
 
  Чтобы управлять ботом, есть следующие **команды**:
 - /start - Начать действовать!
