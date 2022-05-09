@@ -53,6 +53,11 @@
 Есть база данных, в которую записываются id пользователя, время начала, кол-во дней и звание.
 - [**Базу данных можно найти тут**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/blob/main/telegramid.sqlite)
 
+### **Картинки**
+Есть картинки, которые не заставят скучать пользователя.
+
+- [**Их можно найти тут**](https://github.com/NikitaZubovHalmirHalimov/nikitahalmirzubovhalimov/tree/main/photo)
+
 ## **Функции**
 Функции помимо тех, что перечислены выше:
 - **if_user_in_the_db** - проверяет, есть ли пользователь в БД.
