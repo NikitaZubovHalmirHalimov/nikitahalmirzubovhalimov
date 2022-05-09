@@ -80,6 +80,7 @@ def start(message):
     else:
         bot.send_message(user_id, 'СуперЖелезнаяВоля приветствует тебя, ' + message.chat.first_name + '! '
                          + 'Да начнётся побоище!')
+        bot.send_photo(user_id, open("photo/700-nw.jpg", "rb"))
         noww = str(now).split('.')[0]
         cur.execute("INSERT INTO users VALUES(?, ?, ?, ?)", (user_id, noww, 0, '-'))
         conn.commit()
@@ -92,6 +93,7 @@ def end(message):
     user_id = message.chat.id
     if if_user_in_the_db(user_id):
         bot.send_message(user_id, 'Ты зря сдаёшься! Сильнее ты, чем думаешь! Надеюсь, ты скоро вернёшься.')
+        bot.send_photo(user_id, open("photo/scale_1200 (1).png", "rb"))
         cur.execute("DELETE from users WHERE userid = ?", [(user_id)])
         conn.commit()
 
@@ -113,6 +115,7 @@ def getdays(message):
             # Если нет, то даётся определённое звание (информацию о них можно посмотреть в /info)
             else:
                 bot.send_message(user_id, 'У тебя ' + str(n) + count(n) + '(' + all_results[i][3] + ')')
+                bot.send_photo(user_id, open("photo/i.jpg", "rb"))
 
 
 # Обнуление всех данных о пользователе
@@ -122,6 +125,7 @@ def restart(message):
     user_id = message.chat.id
     if if_user_in_the_db(user_id):
         bot.send_message(user_id, 'Не переживай! В следующий раз будет лучше!')
+        bot.send_photo(user_id, open("photo/445-4459404_how-to-draw-thumbs-up-sign.png", "rb"))
         noww = str(datetime.datetime.now()).split('.')[0]
         cur.execute("UPDATE users SET btime = ? WHERE userid = ?", (noww, user_id))
         cur.execute("UPDATE users SET days = ? WHERE userid = ?", (0, user_id))
@@ -164,6 +168,7 @@ def setstartdate2(message):
                 cur.execute("UPDATE users SET ach = ? WHERE userid = ?", (ach(str(delta).split()[0]), user_id))
                 conn.commit()
                 bot.send_message(user_id, 'Установлено новое время: ' + str(d).split(',')[0])
+                bot.send_photo(user_id, open("photo/rawpixel-552391-unsplash.jpg", "rb"))
                 flag = False
             # Если нет, то пользователь должен заново ввести данные
             else:
