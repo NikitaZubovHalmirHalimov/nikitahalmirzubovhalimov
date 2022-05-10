@@ -22,10 +22,10 @@ def job(bot):
         h = str(delta).split()[0]
         try:
             if str(delta).split('.')[0].split()[2] == '0:00:00':
-                cur.execute("UPDATE users SET days = ? WHERE userid = ?", (int(str(delta).split()[0]), s[0]))
+                cur.execute("UPDATE users SET days = ? WHERE userid = ?", (int(h), s[0]))
                 conn.commit()
-                bot.send_message(s[0], "Поздравляю! У вас " + str(delta).split()[0] + count(int(h)) + "Так держать!!!")
                 bot.send_photo(s[0], open("photo/minoni-3840x2160-2015-multfilm-jeltiy-3981.jpg", "rb"))
+                bot.send_message(s[0], "Поздравляю! У вас " + h + count(int(h)) + "Так держать!!!")
                 # Если пользователь достиг определённого рез-та, то ему присваивается звание
                 if int(h) in [1, 3, 5, 7, 10, 14, 21, 30, 60, 90, 120, 150, 180, 240, 300, 365, 500]:
                     cur.execute("UPDATE users SET ach = ? WHERE userid = ?", (ach(h), s[0]))

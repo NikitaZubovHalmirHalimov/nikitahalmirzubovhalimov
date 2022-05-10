@@ -12,13 +12,6 @@ flag = False
 conn = sqlite3.connect('telegramid.sqlite', check_same_thread=False)
 # Создание курсора
 cur = conn.cursor()
-# Создание таблицы в БД
-cur.execute("""CREATE TABLE IF NOT EXISTS users(
-   userid INT,
-   btime TEXT,
-   days INT,
-   ach TEXT);
-""")
 
 
 # Проверка - есть ли пользователь в базе
@@ -78,9 +71,9 @@ def start(message):
         pass
     # Если нет, бот добавляет пользователя в базу
     else:
+        bot.send_photo(user_id, open("photo/700-nw.jpg", "rb"))
         bot.send_message(user_id, 'СуперЖелезнаяВоля приветствует тебя, ' + message.chat.first_name + '! '
                          + 'Да начнётся побоище!')
-        bot.send_photo(user_id, open("photo/700-nw.jpg", "rb"))
         noww = str(now).split('.')[0]
         cur.execute("INSERT INTO users VALUES(?, ?, ?, ?)", (user_id, noww, 0, '-'))
         conn.commit()
@@ -92,8 +85,8 @@ def end(message):
     global user_id, cur, conn
     user_id = message.chat.id
     if if_user_in_the_db(user_id):
-        bot.send_message(user_id, 'Ты зря сдаёшься! Сильнее ты, чем думаешь! Надеюсь, ты скоро вернёшься.')
         bot.send_photo(user_id, open("photo/scale_1200 (1).png", "rb"))
+        bot.send_message(user_id, 'Ты зря сдаёшься! Сильнее ты, чем думаешь! Надеюсь, ты скоро вернёшься.')
         cur.execute("DELETE from users WHERE userid = ?", [(user_id)])
         conn.commit()
 
@@ -114,8 +107,8 @@ def getdays(message):
                 bot.send_message(user_id, 'У тебя 0 дней.')
             # Если нет, то даётся определённое звание (информацию о них можно посмотреть в /info)
             else:
-                bot.send_message(user_id, 'У тебя ' + str(n) + count(n) + '(' + all_results[i][3] + ')')
                 bot.send_photo(user_id, open("photo/i.jpg", "rb"))
+                bot.send_message(user_id, 'У тебя ' + str(n) + count(n) + '(' + all_results[i][3] + ')')
 
 
 # Обнуление всех данных о пользователе
@@ -124,15 +117,16 @@ def restart(message):
     global user_id, cur, conn
     user_id = message.chat.id
     if if_user_in_the_db(user_id):
-        bot.send_message(user_id, 'Не переживай! В следующий раз будет лучше!')
         bot.send_photo(user_id, open("photo/445-4459404_how-to-draw-thumbs-up-sign.png", "rb"))
+        bot.send_message(user_id, 'Не переживай! В следующий раз будет лучше!')
         noww = str(datetime.datetime.now()).split('.')[0]
         cur.execute("UPDATE users SET btime = ? WHERE userid = ?", (noww, user_id))
         cur.execute("UPDATE users SET days = ? WHERE userid = ?", (0, user_id))
+        cur.execute("UPDATE users SET ach = ? WHERE userid = ?", ('-', user_id))
         conn.commit()
 
 
-# Установление нового времени начала 
+# Установление нового времени начала
 @bot.message_handler(commands=['setstarttime'])
 def setstartdate(message):
     global user_id, flag
@@ -161,28 +155,38 @@ def setstartdate2(message):
             d = datetime.datetime(int(year), int(month), int(day), int(hour), int(minute), 0)
             # Время, прошедшее с введённого начала до текущего времени
             delta = now - d
-            # Если пользователь вводит время начала, которое раньше, чем текущее, то все хорошо
-            if int(str(delta).split()[0]) > 0:
-                cur.execute("UPDATE users SET btime = ? WHERE userid = ?", (str(d).split(',')[0], user_id))
-                cur.execute("UPDATE users SET days = ? WHERE userid = ?", (int(str(delta).split()[0]), user_id))
-                cur.execute("UPDATE users SET ach = ? WHERE userid = ?", (ach(str(delta).split()[0]), user_id))
-                conn.commit()
-                bot.send_message(user_id, 'Установлено новое время: ' + str(d).split(',')[0])
-                bot.send_photo(user_id, open("photo/rawpixel-552391-unsplash.jpg", "rb"))
-                flag = False
-            # Если нет, то пользователь должен заново ввести данные
-            else:
+            # Если пользователь вводит время начала позднее, чем текущее, то пользователь должен заново ввести данные
+            if '-' in str(delta).split()[0]:
                 bot.send_message(user_id,
                                  'Введи время начала: год, номер месяца, число, время' + '\n' + '(гггг мм чч чч:мм)')
+            # Если нет, то все хорошо
+            else:
+                # Если 0 дней
+                if ':' in str(delta).split()[0]:
+                    print(str(delta).split()[0])
+                    cur.execute("UPDATE users SET days = ? WHERE userid = ?", (0, user_id))
+                    cur.execute("UPDATE users SET ach = ? WHERE userid = ?", ('-', user_id))
+                # Если дней больше, чем 0
+                elif int(str(delta).split()[0]) > 0:
+                    print(str(delta).split()[0])
+                    cur.execute("UPDATE users SET days = ? WHERE userid = ?", (int(str(delta).split()[0]), user_id))
+                    cur.execute("UPDATE users SET ach = ? WHERE userid = ?", (ach(str(delta).split()[0]), user_id))
+                cur.execute("UPDATE users SET btime = ? WHERE userid = ?", (str(d).split(',')[0], user_id))
+                conn.commit()
+                bot.send_message(user_id, 'Установлено новое время: ' + str(d).split(',')[0])
+                flag = False
     # Если пользователь ввёл дату не по образцу
     except IndexError:
-        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n' + '(гггг мм чч чч:мм)')
+        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n'
+                         + '(гггг мм чч чч:мм). Например: 1970 01 01 00:00')
     # Если у пользователя ошибки в дате (например: 30 февраля)
     except ValueError:
-        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n' + '(гггг мм чч чч:мм)')
+        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n'
+                         + '(гггг мм чч чч:мм). Например: 1970 01 01 00:00')
     # Если у пользователя лишние символы в сообщении
     except TypeError:
-        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n' + '(гггг мм чч чч:мм)')
+        bot.send_message(user_id, 'Введи время начала: год, номер месяца, число, время' + '\n'
+                         + '(гггг мм чч чч:мм). Например: 1970 01 01 00:00')
 
 
 if __name__ == '__main__':
